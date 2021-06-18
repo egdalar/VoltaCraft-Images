@@ -9,8 +9,7 @@ Navigate to `Admin Panel -> Nests -> Select your egg`. Add Docker image URL(s) f
 
 ## Pterodactyl/WISP Images
 
-Add the desired image link from below to your egg using the [instructions from above](https://github.com/Software-Noob/pterodactyl-images#pterodactyl-images).
-
+Add the desired image link from below to your egg using the [instructions from above]
 #### Java
 
 #### Java openj9
