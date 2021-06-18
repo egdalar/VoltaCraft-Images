@@ -1,4 +1,4 @@
-FROM        openjdk:16-slim
+FROM        openjdk:15-slim
 
 LABEL       author="VoltaCraft" maintainer="Support@voltacraft.co.uk"
 

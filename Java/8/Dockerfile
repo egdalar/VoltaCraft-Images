@@ -1,7 +1,6 @@
-FROM        openjdk:16-slim
+FROM        openjdk:8-slim
 
 LABEL       author="VoltaCraft" maintainer="Support@voltacraft.co.uk"
-
 
 RUN apt-get update -y \
  && apt-get install -y curl ca-certificates openssl git tar sqlite fontconfig tzdata iproute2 \
