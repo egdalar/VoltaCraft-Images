@@ -3,7 +3,7 @@ Docker images that can be used with the Pterodactyl/WISP Game Panel. You can req
 
 ## How to add image to your egg
 
-Navigate to `Admin Panel -> Nests -> Select your egg`. Add Docker image URL(s) from the [available list](https://github.com/Software-Noob/pterodactyl-images#pterodactylwisp-images) into the Docker Images section.
+Navigate to `Admin Panel -> Nests -> Select your egg`. Add Docker image URL(s) from the available lists bellow.
 
 ![image](https://user-images.githubusercontent.com/10975908/120903180-56719d80-c64d-11eb-8666-02de8ea80701.png)
 
