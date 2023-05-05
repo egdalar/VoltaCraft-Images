@@ -1,0 +1,65 @@
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import javax.security.auth.login.LoginException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Main extends ListenerAdapter {
+
+    private static final String[] TARGETTRAC_ALLIANCES_TO_CHECK = {"Carthago", "The Armed Peacekeepers", "The Fighting Pacifists"};
+    private static final String URL = "https://politicsandwar.com/api/nations/?key=XXXXXXXXXXXXXXXX";
+
+    public static void main(String[] args) throws LoginException {
+        JDA jda = JDABuilder.createDefault("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX").build();
+        jda.addEventListener(new Main());
+    }
+
+    @Override
+    public void onMessageReceived(MessageReceivedEvent event) {
+        if (event.getAuthor().isBot()) {
+            return;
+        }
+
+        String message = event.getMessage().getContentRaw().toLowerCase();
+        if ("find_target".equals(message)) {
+            sendCsv(event.getChannel(), event.getAuthor());
+        }
+    }
+
+    private void sendCsv(MessageChannel channel, User user) {
+        try {
+            channel.sendMessage("Please wait while I find a target. Please note I am an early version of the script and I need a desktop speadsheet app (aka Excel) installed.").queue();
+            channel.sendMessage("If you don't have Excel, please install the free LibreOffice suite from www.Libreoffice.org").queue();
+            List<List<String>> filteredNations = getNationsData();
+            String filePath = "filtered_nations.csv";
+            try (FileWriter writer = new FileWriter(filePath);
+                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+                         .withHeader("nationid", "nation", "leader", "war_policy", "color", "alliance", "cities", "offensivewars", "defensivewars", "vacmode", "minutessinceactive"))) {
+                for (List<String> nation : filteredNations) {
+                    csvPrinter.printRecord(nation);
+                }
+            }
+
+            channel.sendFile(new File(filePath), "filtered_nations.csv").queue();
+        } catch (IOException e) {
+            e.printStackTrace();
+            channel.sendMessage("Computer Says No").queue();
+        }
+    }
+
+    private List
